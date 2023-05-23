@@ -1,0 +1,18 @@
+  public static void main(String[] args) {
+        // TODO code application logic here
+        String[] friendNames = new String[5];
+        
+        friendNames[0] = "gaia";
+        friendNames[1] = "taiga";
+        friendNames[2] = "triger";
+        friendNames[3] = "agul";
+        friendNames[4] = "tiga";
+        
+        System.out.println("Friend Names:");
+        for (int i = 0; i < friendNames.length; i++) {
+            System.out.println((i + 1) + "." + friendNames[i]);
+        }
+        
+    }
+    
+}
