@@ -1,0 +1,9 @@
+   public static void main(String[] args) {
+        // TODO code application logic here
+        System.out.println("nama: aditya putra purnama");
+        System.out.println("Nim: 22201080");
+        System.out.println("umur: 18");
+        System.out.println("tinggi badan: 184cm");
+    }
+    
+}
