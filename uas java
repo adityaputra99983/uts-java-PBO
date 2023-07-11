@@ -1,0 +1,192 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Buku {
+    private String judul;
+    private int hargaBeli;
+    private int hargaJual;
+    private int stok;
+
+    public Buku(String judul, int hargaBeli, int hargaJual, int stok) {
+        this.judul = judul;
+        this.hargaBeli = hargaBeli;
+        this.hargaJual = hargaJual;
+        this.stok = stok;
+    }
+
+    public String getJudul() {
+        return judul;
+    }
+
+    public int getStok() {
+        return stok;
+    }
+
+    public void tambahStok(int jumlah) {
+        stok += jumlah;
+        System.out.println("Stok buku " + judul + " ditambahkan sebanyak " + jumlah);
+    }
+
+    public void kurangiStok(int jumlah) {
+        if (stok >= jumlah) {
+            stok -= jumlah;
+            System.out.println("Stok buku " + judul + " dikurangi sebanyak " + jumlah);
+        } else {
+            System.out.println("Stok buku " + judul + " tidak mencukupi!");
+        }
+    }
+}
+
+class BukuFiksi extends Buku {
+    public BukuFiksi(String judul, int hargaBeli, int hargaJual, int stok) {
+        super(judul, hargaBeli, hargaJual, stok);
+    }
+}
+
+class BukuNonFiksi extends Buku {
+    public BukuNonFiksi(String judul, int hargaBeli, int hargaJual, int stok) {
+        super(judul, hargaBeli, hargaJual, stok);
+    }
+}
+
+class Majalah extends Buku {
+    private int nomorEdisi;
+
+    public Majalah(String judul, int hargaBeli, int hargaJual, int stok, int nomorEdisi) {
+        super(judul, hargaBeli, hargaJual, stok);
+        this.nomorEdisi = nomorEdisi;
+    }
+
+    public int getNomorEdisi() {
+        return nomorEdisi;
+    }
+}
+
+public class ManajemenBuku {
+    private static int modalAwal = 1000000;
+    private static int modalBerjalan = modalAwal;
+    private static ArrayList<Buku> daftarBuku = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int pilihan;
+
+        // Inisialisasi data buku
+        inisialisasiBuku();
+
+        do {
+            tampilkanMenu();
+            pilihan = input.nextInt();
+            input.nextLine(); // Membersihkan newline character dari buffer
+
+            switch (pilihan) {
+                case 1:
+                    tampilkanModalDanKeuntungan();
+                    break;
+                case 2:
+                    tampilkanStokBuku();
+                    break;
+                case 3:
+                    tambahStokBuku(input);
+                    break;
+                case 4:
+                    jualBuku(input);
+                    break;
+                case 5:
+                    beliBuku(input);
+                    break;
+                case 6:
+                    System.out.println("Program Selesai");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid!");
+            }
+        } while (pilihan != 6);
+    }
+
+    private static void tampilkanMenu() {
+        System.out.println("Manajemen Penjualan dan Pembelian Buku");
+        System.out.println("1. Tampilkan Modal dan Keuntungan Berjalan");
+        System.out.println("2. Tampilkan Stok Buku");
+        System.out.println("3. Tambah Stok Buku");
+        System.out.println("4. Jual Buku");
+        System.out.println("5. Beli Buku");
+        System.out.println("6. Exit");
+        System.out.print("Masukkan pilihan: ");
+    }
+
+    private static void tampilkanModalDanKeuntungan() {
+        int keuntungan = modalBerjalan - modalAwal;
+        System.out.println("Modal Awal: " + modalAwal);
+        System.out.println("Modal Berjalan: " + modalBerjalan);
+        System.out.println("Keuntungan: " + keuntungan);
+    }
+
+    private static void tampilkanStokBuku() {
+        System.out.println("Stok Buku:");
+        for (Buku buku : daftarBuku) {
+            System.out.println("Judul: " + buku.getJudul());
+            System.out.println("Stok: " + buku.getStok());
+        }
+    }
+
+    private static void tambahStokBuku(Scanner input) {
+        System.out.print("Masukkan judul buku: ");
+        String judul = input.nextLine();
+        System.out.print("Masukkan jumlah stok yang ditambahkan: ");
+        int jumlah = input.nextInt();
+        input.nextLine(); // Membersihkan newline character dari buffer
+
+        for (Buku buku : daftarBuku) {
+            if (buku.getJudul().equalsIgnoreCase(judul)) {
+                buku.tambahStok(jumlah);
+                return;
+            }
+        }
+
+        System.out.println("Buku dengan judul " + judul + " tidak ditemukan.");
+    }
+
+    private static void jualBuku(Scanner input) {
+        System.out.print("Masukkan judul buku yang dijual: ");
+        String judul = input.nextLine();
+        System.out.print("Masukkan jumlah buku yang dijual: ");
+        int jumlah = input.nextInt();
+        input.nextLine(); // Membersihkan newline character dari buffer
+
+        for (Buku buku : daftarBuku) {
+            if (buku.getJudul().equalsIgnoreCase(judul)) {
+                buku.kurangiStok(jumlah);
+                modalBerjalan += buku.getHargaBeli() * jumlah;
+                return;
+            }
+        }
+
+        System.out.println("Buku dengan judul " + judul + " tidak ditemukan.");
+    }
+
+    private static void beliBuku(Scanner input) {
+        System.out.print("Masukkan judul buku yang dibeli: ");
+        String judul = input.nextLine();
+        System.out.print("Masukkan jumlah buku yang dibeli: ");
+        int jumlah = input.nextInt();
+        input.nextLine(); // Membersihkan newline character dari buffer
+
+        for (Buku buku : daftarBuku) {
+            if (buku.getJudul().equalsIgnoreCase(judul)) {
+                if (modalBerjalan >= buku.getHargaBeli() * jumlah) {
+                    buku.tambahStok(jumlah);
+                    modalBerjalan -= buku.getHargaBeli() * jumlah;
+                } else {
+                    System.out.println("Modal berjalan tidak mencukupi untuk pembelian buku ini.");
+                }
+                return;
+            }
+        }
+
+        System.out.println("Buku dengan judul " + judul + " tidak ditemukan.");
+    }
+
+    private static void inisialisasiBuku() {
+        
+    }
